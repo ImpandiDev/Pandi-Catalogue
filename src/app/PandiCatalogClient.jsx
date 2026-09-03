@@ -170,15 +170,6 @@ export default function PandiCatalogClient() {
                 <div className="max-w-7xl mx-auto flex flex-col gap-8 md:gap-10">
 
                     <section id="landing" className="mx-auto w-full flex flex-col gap-6 md:gap-10 md:flex-row">
-                        <div className="flex flex-col items-center justify-center w-full md:w-1/3">
-                            <h2 className="text-2xl font-black text-mainColor text-center mb-6">
-                                Material para oficina y papelería de Pandi
-                            </h2>
-                            <p className="text-gray-500 text-center mb-6">
-                                Explora las categorías Pandi y su catálogo en: micas, microminas, laminas de acetato y más.
-                            </p>
-                        </div>
-
                         <LandingGrid onSelectCategory={handleCategorySelect} />
                     </section>
 
