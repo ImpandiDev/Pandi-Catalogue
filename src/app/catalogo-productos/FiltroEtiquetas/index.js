@@ -71,31 +71,40 @@ const FiltroEtiquetas = ({ etiquetaDis, setEtiqueta }) => {
 
             {/* Tags row wraps naturally into multiple rows */}
             <div className="flex flex-wrap gap-2">
-                {ETIQUETAS_FILTER.slice(tagIndex, tagIndex + 20).map((tag) => {
-                    const isActive =
-                        etiquetaDis &&
-                        etiquetaDis.split(",").includes(tag.nombre);
+                {(() => {
+                    const activeTagsList = etiquetaDis ? etiquetaDis.split(",").filter(Boolean) : [];
+                    const inactiveTags = ETIQUETAS_FILTER.filter(tag => !activeTagsList.includes(tag.nombre));
+                    const slicedInactiveTags = inactiveTags.slice(tagIndex, tagIndex + 20);
+                    
+                    const displayedTags = [
+                        ...ETIQUETAS_FILTER.filter(tag => activeTagsList.includes(tag.nombre)),
+                        ...slicedInactiveTags
+                    ].sort((a, b) => a.nombre.localeCompare(b.nombre));
 
-                    return (
-                        <button
-                            key={tag.codigo}
-                            onClick={() => handleTagToggle(tag.nombre)}
-                            className={`
-                                inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold
-                                border transition-all duration-200 cursor-pointer select-none
-                                ${isActive
-                                    ? "bg-mainColor border-mainColor text-white shadow-sm scale-[1.02]"
-                                    : "bg-gray-50 border-gray-200 text-gray-600 hover:border-mainColor hover:text-mainColor hover:bg-red-50"
-                                }
-                            `}
-                        >
-                            {isActive && (
-                                <X size={10} weight="bold" className="opacity-80" />
-                            )}
-                            {tag.nombre}
-                        </button>
-                    );
-                })}
+                    return displayedTags.map((tag) => {
+                        const isActive = activeTagsList.includes(tag.nombre);
+
+                        return (
+                            <button
+                                key={tag.codigo}
+                                onClick={() => handleTagToggle(tag.nombre)}
+                                className={`
+                                    inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold
+                                    border transition-all duration-200 cursor-pointer select-none
+                                    ${isActive
+                                        ? "bg-mainColor border-mainColor text-white shadow-sm scale-[1.02]"
+                                        : "bg-gray-50 border-gray-200 text-gray-600 hover:border-mainColor hover:text-mainColor hover:bg-red-50"
+                                    }
+                                `}
+                            >
+                                {isActive && (
+                                    <X size={10} weight="bold" className="opacity-80" />
+                                )}
+                                {tag.nombre}
+                            </button>
+                        );
+                    });
+                })()}
             </div>
             
             <div className="flex justify-between items-center mt-1 px-1">
@@ -108,14 +117,18 @@ const FiltroEtiquetas = ({ etiquetaDis, setEtiqueta }) => {
                     </button>
                 ) : <div></div>}
                 
-                {tagIndex + 20 < ETIQUETAS_FILTER.length && (
-                    <button 
-                        onClick={() => setTagIndex(tagIndex + 10)}
-                        className="text-xs font-bold text-mainColor hover:text-[#93363B] transition-colors"
-                    >
-                        Ver más &rarr;
-                    </button>
-                )}
+                {(() => {
+                    const activeTagsList = etiquetaDis ? etiquetaDis.split(",").filter(Boolean) : [];
+                    const inactiveTags = ETIQUETAS_FILTER.filter(tag => !activeTagsList.includes(tag.nombre));
+                    return tagIndex + 20 < inactiveTags.length && (
+                        <button 
+                            onClick={() => setTagIndex(tagIndex + 10)}
+                            className="text-xs font-bold text-mainColor hover:text-[#93363B] transition-colors"
+                        >
+                            Ver más &rarr;
+                        </button>
+                    );
+                })()}
             </div>
         </div>
     );
