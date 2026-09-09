@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { LANDING_ITEMS } from "@/data/landingItems";
 import config from "../../../public/config";
+import Loader from "@/components/Loader";
 
 /** Duration each product image is shown (ms) */
 const SLIDE_DURATION = 4000;
@@ -70,12 +71,18 @@ async function fetchImagesForEtiqueta(etiqueta) {
 const LandingCard = ({ item, onSelectCategory }) => {
   const [productImages, setProductImages] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isFetching, setIsFetching] = useState(true);
+  const [imageReady, setImageReady] = useState(false);
 
   // Fetch product images on mount
   useEffect(() => {
     let cancelled = false;
+    setIsFetching(true);
     fetchImagesForEtiqueta(item.label).then((imgs) => {
-      if (!cancelled && imgs.length > 0) setProductImages(imgs);
+      if (!cancelled) {
+        if (imgs.length > 0) setProductImages(imgs);
+        setIsFetching(false);
+      }
     });
     return () => { cancelled = true; };
   }, [item.label]);
@@ -84,6 +91,7 @@ const LandingCard = ({ item, onSelectCategory }) => {
   useEffect(() => {
     if (productImages.length <= 1) return;
     const timer = setInterval(() => {
+      setImageReady(false); // Reset image ready state when swapping
       setActiveIndex((prev) => (prev + 1) % productImages.length);
     }, SLIDE_DURATION);
     return () => clearInterval(timer);
@@ -111,25 +119,33 @@ const LandingCard = ({ item, onSelectCategory }) => {
       className="group relative block w-full overflow-hidden rounded-lg border border-gray-200 bg-gray-100 text-left shadow-sm transition-shadow hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mainColor"
     >
       <div className="relative aspect-[4/3] w-full bg-white flex items-center justify-center">
-        {hasProductImages ? (
+        {(isFetching || !imageReady) && (
+          <div className="absolute inset-0 flex items-center justify-center z-10">
+            <Loader />
+          </div>
+        )}
+        
+        {!isFetching && hasProductImages ? (
           <Image
             src={productImages[activeIndex]}
             alt={item.label}
             fill
             sizes="(max-width: 768px) 46vw, 440px"
-            className="object-contain scale-[1.428] transition-transform duration-500 group-hover:scale-[1.5]"
+            className={`object-contain scale-[1.428] transition-all duration-500 group-hover:scale-[1.5] ${imageReady ? 'opacity-100' : 'opacity-0'}`}
+            onLoad={() => setImageReady(true)}
             onError={() => handleImageError(activeIndex)}
           />
-        ) : (
+        ) : !isFetching && !hasProductImages ? (
           /* Fallback to original static image or icon */
           <Image
             src={fallbackSrc}
             alt={item.label}
             fill
             sizes="(max-width: 768px) 46vw, 440px"
-            className="object-contain p-4 transition-transform duration-500 group-hover:scale-[1.1]"
+            className={`object-contain p-4 transition-all duration-500 group-hover:scale-[1.1] ${imageReady ? 'opacity-100' : 'opacity-0'}`}
+            onLoad={() => setImageReady(true)}
           />
-        )}
+        ) : null}
       </div>
 
       <div className="absolute inset-x-0 bottom-0 bg-black/65 px-2 py-1 text-center backdrop-blur-md sm:py-1.5">
