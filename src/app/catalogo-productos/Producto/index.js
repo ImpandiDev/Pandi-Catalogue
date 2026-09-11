@@ -58,8 +58,7 @@ const Producto = (props) => {
                 <Image
                     src={props.img || config.isoTipo}
                     alt={props.nombre}
-                    className={`w-full h-full object-contain scale-[1.667] rounded-t-xl duration-500 group-hover:scale-[1.75] ${imageReady ? 'opacity-100' : 'opacity-0'
-                        }`}
+                    className={`w-full h-full object-contain rounded-t-xl transition-all duration-500 group-hover:scale-110 ${imageReady ? 'opacity-100' : 'opacity-0'}`}
                     width={260}
                     height={260}
                     onLoad={() => setImageReady(true)}
