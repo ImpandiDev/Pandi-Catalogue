@@ -5,6 +5,7 @@ import Image from "next/image";
 import { LANDING_ITEMS } from "@/data/landingItems";
 import config from "../../../public/config";
 import Loader from "@/components/Loader";
+import { BLACKLISTED_PRODUCTS } from "@/utils/blacklist";
 
 /** Duration each product image is shown (ms) */
 const SLIDE_DURATION = 4000;
@@ -46,8 +47,10 @@ async function fetchImagesForEtiqueta(etiqueta) {
     const res = await fetch(`${config.obtenerProductos}?${params.toString()}`);
     if (!res.ok) return [];
 
-    const { productos } = await res.json();
+    let { productos } = await res.json();
     if (!Array.isArray(productos)) return [];
+
+    productos = productos.filter(p => !BLACKLISTED_PRODUCTS.includes(p.codigo));
 
     // Collect unique, non-empty image URLs
     const seen = new Set();
@@ -124,14 +127,14 @@ const LandingCard = ({ item, onSelectCategory }) => {
             <Loader />
           </div>
         )}
-        
+
         {!isFetching && hasProductImages ? (
           <Image
             src={productImages[activeIndex]}
             alt={item.label}
             fill
             sizes="(max-width: 768px) 46vw, 440px"
-            className={`object-contain scale-[1.428] transition-all duration-500 group-hover:scale-[1.5] ${imageReady ? 'opacity-100' : 'opacity-0'}`}
+            className={`object-contain pb-[40px] transition-all duration-500 group-hover:scale-110 ${imageReady ? 'opacity-100' : 'opacity-0'}`}
             onLoad={() => setImageReady(true)}
             onError={() => handleImageError(activeIndex)}
           />
@@ -142,14 +145,14 @@ const LandingCard = ({ item, onSelectCategory }) => {
             alt={item.label}
             fill
             sizes="(max-width: 768px) 46vw, 440px"
-            className={`object-contain p-4 transition-all duration-500 group-hover:scale-[1.1] ${imageReady ? 'opacity-100' : 'opacity-0'}`}
+            className={`object-contain pb-[40px] transition-all duration-500 group-hover:scale-110 ${imageReady ? 'opacity-100' : 'opacity-0'}`}
             onLoad={() => setImageReady(true)}
           />
         ) : null}
       </div>
 
-      <div className="absolute inset-x-0 bottom-0 bg-black/65 px-2 py-1 text-center backdrop-blur-md sm:py-1.5">
-        <span className="text-xs font-bold uppercase tracking-wide text-white drop-shadow-sm sm:text-sm">
+      <div className="absolute inset-x-0 bottom-0 px-2 py-2 text-center pb-4">
+        <span className="text-xs font-black uppercase tracking-wide text-black drop-shadow-sm sm:text-sm">
           {item.label}
         </span>
       </div>

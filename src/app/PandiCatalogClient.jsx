@@ -9,6 +9,7 @@ import FiltroSuperior from "./catalogo-productos/FiltroSuperior";
 import Cuerpo from "./catalogo-productos/Cuerpo";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { useAppContext } from "@/context";
+import { BLACKLISTED_PRODUCTS } from "@/utils/blacklist";
 
 // Sorting mapping helper
 function resolveOrden(ordenDisplay) {
@@ -109,7 +110,11 @@ export default function PandiCatalogClient() {
             const res = await fetch(`${config.obtenerProductos}?${params.toString()}`);
 
             if (res.ok) {
-                const { productos, totalPages: tp, ultimaActualizacion: ua } = await res.json();
+                let { productos, totalPages: tp, ultimaActualizacion: ua } = await res.json();
+                
+                if (productos && Array.isArray(productos)) {
+                    productos = productos.filter(p => !BLACKLISTED_PRODUCTS.includes(p.codigo));
+                }
 
                 if (ua && !append) {
                     try {
