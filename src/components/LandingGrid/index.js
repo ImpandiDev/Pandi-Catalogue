@@ -36,7 +36,7 @@ async function fetchImagesForEtiqueta(etiqueta) {
   try {
     const params = new URLSearchParams({
       etiquetas: etiqueta,
-      marcas: "Pandi",
+      marcas: process.env.NEXT_PUBLIC_API_BRAND || "Pandi",
       orden: "popularidad",
       direccion: "asc",
       pagina: "1",

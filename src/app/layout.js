@@ -4,8 +4,8 @@ import AppContextProvider from "../context";
 
 export const metadata = {
   metadataBase: new URL('https://pandi.com.ec'),
-  title: "Catálogo Pandi",
-  description: "Catálogo exclusivo de productos Pandi en IMPANDI.",
+  title: `Catálogo ${process.env.NEXT_PUBLIC_BRAND_NAME || 'Pandi'}`,
+  description: `Catálogo exclusivo de productos ${process.env.NEXT_PUBLIC_BRAND_NAME || 'Pandi'} en IMPANDI.`,
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "",
   },
@@ -15,7 +15,7 @@ export const metadata = {
     apple: "/icon.jpg",
   },
   openGraph: {
-    siteName: "Pandi",
+    siteName: process.env.NEXT_PUBLIC_BRAND_NAME || "Pandi",
     locale: "es_EC",
     type: "website",
   },

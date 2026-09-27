@@ -99,7 +99,7 @@ export default function PandiCatalogClient() {
             const params = new URLSearchParams({
                 categorias,
                 etiquetas: etiqueta,
-                marcas: 'Pandi',
+                marcas: process.env.NEXT_PUBLIC_API_BRAND || 'Pandi',
                 orden,
                 direccion,
                 pagina: page.toString(),
