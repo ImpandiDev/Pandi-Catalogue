@@ -112,7 +112,7 @@ const LandingCard = ({ item, onSelectCategory }) => {
 
   // Determine what to show
   const hasProductImages = productImages.length > 0;
-  const fallbackSrc = item.image ? `/images/landing/${item.image}` : `/icon.jpg`;
+  const fallbackSrc = item.image ? `/images/landing/${item.image}` : `/${process.env.NEXT_PUBLIC_BRAND_NAME || 'Pandi'}_icon.ico`;
 
   return (
     <button

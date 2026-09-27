@@ -10,9 +10,9 @@ export const metadata = {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "",
   },
   icons: {
-    icon: "/icon.jpg",
-    shortcut: "/icon.jpg",
-    apple: "/icon.jpg",
+    icon: `/${process.env.NEXT_PUBLIC_BRAND_NAME || 'Pandi'}_icon.ico`,
+    shortcut: `/${process.env.NEXT_PUBLIC_BRAND_NAME || 'Pandi'}_icon.ico`,
+    apple: `/${process.env.NEXT_PUBLIC_BRAND_NAME || 'Pandi'}_icon.ico`,
   },
   openGraph: {
     siteName: process.env.NEXT_PUBLIC_BRAND_NAME || "Pandi",
