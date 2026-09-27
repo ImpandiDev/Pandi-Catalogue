@@ -72,7 +72,7 @@ function Cuerpo({ data, loading, loadingMore, hasMore, loadMore }) {
                         No se encontraron productos
                     </h3>
                     <p className="text-xs md:text-sm text-gray-400 font-semibold max-w-sm mt-2 mb-4 leading-normal">
-                        Intenta limpiar los filtros o buscar otros términos para encontrar productos Pandi.
+                        Intenta limpiar los filtros o buscar otros términos para encontrar productos {process.env.NEXT_PUBLIC_BRAND_NAME || 'Pandi'}.
                     </p>
                     <LinkButton
                         href="/"

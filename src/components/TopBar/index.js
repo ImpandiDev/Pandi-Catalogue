@@ -13,8 +13,8 @@ const TopBar = () => {
             <div className="flex items-center">
                 <Link href="/#landing" className="flex flex-col items-center hover:opacity-90 transition-opacity -mt-5">
                     <Image
-                        src="/images/Providers/Products brands/pandi.png"
-                        alt="Catálogo Pandi"
+                        src={process.env.NEXT_PUBLIC_LOGO_URL || "/images/Providers/Products brands/pandi.png"}
+                        alt={`Catálogo ${process.env.NEXT_PUBLIC_BRAND_NAME || 'Pandi'}`}
                         className="h-12 md:h-[82px] w-auto object-contain"
                         width={250}
                         height={82}

@@ -13,7 +13,7 @@ const FiltroSuperior = ({
             {/* Left side: title & update date */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 md:gap-8">
                 <h2 className="text-xl md:text-2xl font-black text-gray-800 tracking-tight">
-                    Catálogo Pandi
+                    Catálogo {process.env.NEXT_PUBLIC_BRAND_NAME || 'Pandi'}
                 </h2>
             </div>
 
