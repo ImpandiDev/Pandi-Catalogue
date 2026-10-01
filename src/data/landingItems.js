@@ -1,69 +1,15 @@
-export const PANDI_ETIQUETAS = [
-  { label: "AGUZADORES" },
-  { label: "ALFILERES" },
-  { label: "ALMOHADILLAS" },
-  { label: "APOYAMANOS" },
-  { label: "ARCHIVADORES" },
-  { label: "BASES DE CORTE" },
-  { label: "BASUREROS" },
-  { label: "CARPETAS" },
-  { label: "CINTA CORRETORA" },
-  { label: "CLIPS" },
-  { label: "COLORES" },
-  { label: "COMPASES" },
-  { label: "CORRECTORES" },
-  { label: "CUCHILLAS" },
-  { label: "FOAMIS" },
-  { label: "FOLDERS" },
-  { label: "FOLDERS COLGANTE" },
-  { label: "FORROS PLASTICOS" },
-  { label: "GRAPADORAS" },
-  { label: "GRAPAS" },
-  { label: "INDICES" },
-  { label: "LAMINAS DE ACETATO" },
-  { label: "LAMINADORAS" },
-  { label: "LIGAS" },
-  { label: "MANECILLAS" },
-  { label: "MANECILLAS PARA APOYAMANOS" },
-  { label: "MICAS" },
-  { label: "MICROMINAS" },
-  { label: "NOTITAS ADHESIVAS" },
-  { label: "ORGANIZADOR DE ESCRITORIO" },
-  { label: "PALOS DE HELADO" },
-  { label: "PAPEL ALUMINIO" },
-  { label: "PAPEL CELOFAN" },
-  { label: "PAPEL FLUORESCENTE" },
-  { label: "PAPEL OROPEL" },
-  { label: "PAPEL PLANO" },
-  { label: "PAPEL REGALO" },
-  { label: "PAPEL TERMICO" },
-  { label: "PAPEL TORNASOL" },
-  { label: "PASTAS" },
-  { label: "PERFORADORAS" },
-  { label: "PIZARRONES" },
-  { label: "PORTACLIPS" },
-  { label: "PORTACREDENCIALES" },
-  { label: "PORTALAPICES" },
-  { label: "PORTAMINAS" },
-  { label: "PORTAPLANOS" },
-  { label: "PROTECTORES DE HOJAS" },
-  { label: "PUSH PIN" },
-  { label: "ROLLOS PARA ATIQUETADORA" },
-  { label: "SACAPUNTAS" },
-  { label: "SILICONAS" },
-  { label: "SOBRES" },
-  { label: "TACHUELAS" },
-  { label: "TIJERAS" },
-  { label: "VINCHAS" },
-];
+const etiquetasEnv = process.env.NEXT_PUBLIC_ETIQUETAS || "";
 
-export const LANDING_ITEMS = PANDI_ETIQUETAS;
+export const ETIQUETAS = etiquetasEnv
+  ? etiquetasEnv.split(',').map(label => ({ label: label.trim() }))
+  : [];
+
+export const LANDING_ITEMS = ETIQUETAS;
 
 export function getEtiquetasForFilter() {
-  return PANDI_ETIQUETAS.map((item, idx) => ({
+  return ETIQUETAS.map((item, idx) => ({
     codigo: idx + 1,
     nombre: item.label,
     nombreUnicode: item.label,
   }));
 }
-
